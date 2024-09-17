@@ -3,12 +3,11 @@ import concurrent.futures
 import time
 import random
 import csv
-from api_requester import APIRequester
-from influxdb_writer import InfluxDBWriter
+from infra.api_requester import APIRequester
+from infra.influxdb_writer import InfluxDBWriter
 
 
 class StressTester:
-    """Coordinates the stress testing process."""
 
     def __init__(self, config_loader):
         self.config_loader = config_loader
