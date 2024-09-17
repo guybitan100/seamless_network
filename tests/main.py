@@ -1,9 +1,8 @@
-# stress_test.py
 import argparse
 import signal
 import sys
-from infra.config_loader import ConfigLoader
-from infra.stress_tester import StressTester
+from config_loader import ConfigLoader
+from stress_tester import StressTester
 
 
 def signal_handler(signum, frame):

@@ -1,4 +1,3 @@
-# stress_tester.py
 import concurrent.futures
 import time
 import random
@@ -92,7 +91,7 @@ class StressTester:
         self.write_results_to_csv(results)
 
         # Write results to InfluxDB
-        self.influxdb_writer.write_to_influxdb(results)
+        # self.influxdb_writer.write_to_influxdb(results)
 
     @staticmethod
     def write_results_to_csv(results):
