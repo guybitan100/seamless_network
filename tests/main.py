@@ -2,7 +2,7 @@
 import argparse
 import signal
 import sys
-from config_loader import ConfigLoader
+from infra.config_loader import ConfigLoader
 from infra.stress_tester import StressTester
 
 
