@@ -6,10 +6,17 @@ import csv
 import argparse
 import signal
 import sys
+from influxdb_client import InfluxDBClient, Point, WritePrecision
 
 API_URL = "https://microcks.gin.dev.securingsam.io/rest/Reputation+API/1.0.0/domain/ranking/{}"
 AUTH_TOKEN = "I_am_under_stress_when_I_test"
 HEADERS = {"Authorization": f"Token {AUTH_TOKEN}"}
+
+# InfluxDB 2.x configuration
+INFLUXDB_URL = "http://localhost:8086"
+INFLUXDB_TOKEN = "your_influxdb_token"
+INFLUXDB_ORG = "your_org_name"
+INFLUXDB_BUCKET = "stress_test_bucket"
 
 
 def fetch_reputation(domain):
@@ -49,6 +56,31 @@ def signal_handler(signum, frame):
     """
     print("KeyboardInterrupt detected. Ending stress test early.")
     sys.exit(1)
+
+
+def write_to_influxdb(results):
+    """
+    Write the stress test results to InfluxDB 2.x using Flux.
+
+    Args:
+        results (list): List of tuples containing elapsed time and errors for each request.
+    """
+    with InfluxDBClient(
+        url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG
+    ) as client:
+        write_api = client.write_api(write_options=WritePrecision.NS)
+
+        for elapsed_time, error in results:
+            point = (
+                Point("reputation_api_test")
+                .field(
+                    "elapsed_time",
+                    float(elapsed_time) if elapsed_time is not None else 0,
+                )
+                .field("error", str(error) if error is not None else "None")
+                .time(time.time(), WritePrecision.NS)
+            )
+            write_api.write(bucket=INFLUXDB_BUCKET, record=point)
 
 
 def stress_test(concurrent_requests, num_domains, timeout):
@@ -112,6 +144,9 @@ def stress_test(concurrent_requests, num_domains, timeout):
         writer.writeheader()
         for elapsed_time, error in results:
             writer.writerow({"elapsed_time": elapsed_time, "error": error})
+
+    # Write results to InfluxDB
+    write_to_influxdb(results)
 
 
 if __name__ == "__main__":
