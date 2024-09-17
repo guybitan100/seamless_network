@@ -158,7 +158,7 @@ def stress_test(concurrent_requests, num_domains, timeout):
             writer.writerow({"elapsed_time": elapsed_time, "error": error})
 
     # Write results to InfluxDB
-    write_to_influxdb(results)
+    # write_to_influxdb(results)
 
 
 if __name__ == "__main__":
