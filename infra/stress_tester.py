@@ -3,8 +3,8 @@ import concurrent.futures
 import time
 import random
 import csv
-from infra.api_requester import APIRequester
-from infra.influxdb_writer import InfluxDBWriter
+from api_requester import APIRequester
+from influxdb_writer import InfluxDBWriter
 
 
 class StressTester:

@@ -3,7 +3,7 @@ import argparse
 import signal
 import sys
 from infra.config_loader import ConfigLoader
-from tests.stress_tester import StressTester
+from infra.stress_tester import StressTester
 
 
 def signal_handler(signum, frame):
