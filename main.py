@@ -6,17 +6,29 @@ import csv
 import argparse
 import signal
 import sys
+import yaml
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 
-API_URL = "https://microcks.gin.dev.securingsam.io/rest/Reputation+API/1.0.0/domain/ranking/{}"
-AUTH_TOKEN = "I_am_under_stress_when_I_test"
+
+# Load configuration from YAML file
+def load_config(yaml_file):
+    with open(yaml_file, "r") as file:
+        return yaml.safe_load(file)
+
+
+# Load the configuration
+config = load_config("config.yaml")
+
+# API configuration
+API_URL = config["api_url"]
+AUTH_TOKEN = config["auth_token"]
 HEADERS = {"Authorization": f"Token {AUTH_TOKEN}"}
 
 # InfluxDB 2.x configuration
-INFLUXDB_URL = "http://localhost:8086"
-INFLUXDB_TOKEN = "your_influxdb_token"
-INFLUXDB_ORG = "your_org_name"
-INFLUXDB_BUCKET = "stress_test_bucket"
+INFLUXDB_URL = config["influxdb"]["url"]
+INFLUXDB_TOKEN = config["influxdb"]["token"]
+INFLUXDB_ORG = config["influxdb"]["org"]
+INFLUXDB_BUCKET = config["influxdb"]["bucket"]
 
 
 def fetch_reputation(domain):
@@ -146,7 +158,7 @@ def stress_test(concurrent_requests, num_domains, timeout):
             writer.writerow({"elapsed_time": elapsed_time, "error": error})
 
     # Write results to InfluxDB
-    # write_to_influxdb(results)
+    write_to_influxdb(results)
 
 
 if __name__ == "__main__":
