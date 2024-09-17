@@ -3,7 +3,6 @@ import time
 
 
 class APIRequester:
-    """Handles making API requests to fetch domain reputation."""
 
     def __init__(self, api_url, auth_token):
         self.api_url = api_url
