@@ -1,6 +1,3 @@
-Here's an updated structure for the README file that includes sections for usage, detailed descriptions, and contribution guidelines.
-
----
 
 # Reputation Service Stress Test Tool
 
@@ -43,17 +40,17 @@ Edit the `config.yaml` file to set up the necessary configuration parameters, in
 To run the stress test, use the following command:
 
 ```bash
-python stress_tester.py --concurrent-requests <number> --domains <domain-file> --timeout <seconds>
+python main.py --config_file <path_to_config_file> --concurrent_requests <number> --num_domains <number>
 ```
 
-- `--concurrent-requests`: Number of concurrent requests to send.
-- `--domains`: Path to the file containing the list of domains to test.
-- `--timeout`: Timeout for each request in seconds.
+- `--config_file`: Path to the YAML configuration file (default: `config.yaml`).
+- `--concurrent_requests`: Number of concurrent requests to send (default: 10).
+- `--num_domains`: Number of domains to test, with a maximum limit of 5000 (default: 100).
 
 Example:
 
 ```bash
-python stress_tester.py --concurrent-requests 100 --domains domains.txt --timeout 10
+python main.py --config_file config.yaml --concurrent_requests 100 --num_domains 500
 ```
 
 ## Project Structure
@@ -92,7 +89,3 @@ Please ensure that your code adheres to the project's coding standards and inclu
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-Feel free to copy this text into a new `README.md` file or replace the existing one. If you want to save this as a file directly, let me know!
