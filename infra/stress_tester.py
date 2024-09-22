@@ -33,7 +33,7 @@ class StressTester:
         """
         # Generate a list of domains for testing
         domains = [
-            f"example{i}.com" for i in range(num_domains)
+            f"www.example{i}.com" for i in range(num_domains)
         ]  # Replace with actual domains fetching logic
         results = []
 
@@ -47,7 +47,6 @@ class StressTester:
                 ): i
                 for i in range(concurrent_requests)
             }
-
             try:
                 for future in concurrent.futures.as_completed(futures, timeout=timeout):
                     elapsed_time, error = future.result()
